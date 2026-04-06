@@ -73,6 +73,7 @@ const Dashboard = ({ onLogout }) => {
       if (datosUsuario) {
         const userParsed = JSON.parse(datosUsuario);
         setUser(userParsed); 
+        console.log("DATOS EN LOCALSTORAGE:", userParsed);
         
         const id = userParsed.id || userParsed.usuario?.id;
         ejecutarCargaInicial(id);
