@@ -80,7 +80,7 @@ const Dashboard = ({ onLogout }) => {
 
   const ejecutarCargaInicial = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:3000/productos?usuarioId=${id}`);
+      const response = await fetch(`${API_BASE_URL}/productos?usuarioId=${id}`);
       const data = await response.json();
       setProductos(Array.isArray(data) ? data : []);
     } catch (e) { console.error("Error en carga inicial:", e); }
@@ -90,12 +90,16 @@ const Dashboard = ({ onLogout }) => {
   // 3. FUNCIONES DE LÓGICA
   // ==========================================
 
+  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://127.0.0.1:3000' 
+    : 'https://contaven-backend.onrender.com';
+
   // --- 3.1. PRODUCTOS: CARGAR DESDE DB ---
   const cargarProductos = async (proximaVista) => {
     const idActivo = user?.id || user?.usuario?.id; 
     if (!idActivo) return; 
     try {
-      const response = await fetch(`http://127.0.0.1:3000/productos?usuarioId=${idActivo}`);
+      const response = await fetch(`${API_BASE_URL}/productos?usuarioId=${idActivo}`);
       if (!response.ok) throw new Error("Error en respuesta de productos");
       const data = await response.json();
       setProductos(Array.isArray(data) ? data : []);
@@ -114,7 +118,7 @@ const Dashboard = ({ onLogout }) => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/productos', {
+      const response = await fetch(`${API_BASE_URL}/productos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosConUsuario) 
@@ -136,7 +140,7 @@ const Dashboard = ({ onLogout }) => {
   const actualizarProducto = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://127.0.0.1:3000/productos/${editandoProducto.id}`, {
+      const response = await fetch(`${API_BASE_URL}/productos/${editandoProducto.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editandoProducto)
@@ -156,7 +160,7 @@ const Dashboard = ({ onLogout }) => {
   const eliminarProducto = async (id) => {
     if(!confirm("¿Deseas eliminar permanentemente este producto?")) return;
     try {
-      const response = await fetch(`http://127.0.0.1:3000/productos/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_BASE_URL}/productos/${id}`, { method: 'DELETE' });
       if(response.ok) {
         setProductos(productos.filter(p => p.id !== id));
       }
@@ -227,7 +231,7 @@ const Dashboard = ({ onLogout }) => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/venta/cobrar', {
+      const response = await fetch(`${API_BASE_URL}/venta/cobrar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosVenta)
@@ -260,7 +264,7 @@ const Dashboard = ({ onLogout }) => {
   const cargarHistorial = async (vistasiguiente = 'historial') => {
     const idActivo = user?.id || user?.usuario?.id;
     try {
-      const response = await fetch(`http://127.0.0.1:3000/venta/historial?usuarioId=${idActivo}`);
+      const response = await fetch(`${API_BASE_URL}/venta/historial?usuarioId=${idActivo}`);
       const data = await response.json();
       setHistorial(Array.isArray(data) ? data : []);
       setView(vistasiguiente); 
