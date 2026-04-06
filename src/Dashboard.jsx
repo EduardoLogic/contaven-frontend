@@ -32,6 +32,10 @@ const Dashboard = ({ onLogout }) => {
   // --- ESTADO CONVERSOR REGISTRO ---
   const [inputPrecio, setInputPrecio] = useState({ usd: 0, ves: 0 });
 
+  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://127.0.0.1:3000' 
+    : 'https://contaven-backend.onrender.com';
+
   // ==========================================
   // 🚨 FUNCIÓN DE APOYO (DEBE IR ANTES DE LOS EFECTOS)
   // ==========================================
@@ -90,9 +94,7 @@ const Dashboard = ({ onLogout }) => {
   // 3. FUNCIONES DE LÓGICA
   // ==========================================
 
-  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://127.0.0.1:3000' 
-    : 'https://contaven-backend.onrender.com';
+
 
   // --- 3.1. PRODUCTOS: CARGAR DESDE DB ---
   const cargarProductos = async (proximaVista) => {
